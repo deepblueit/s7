@@ -54,13 +54,14 @@ body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:"IBM Ple
 .c-icons span{display:grid;place-items:center;width:7mm;height:7mm;border:.6pt solid var(--copper);border-radius:50%}
 .c-icons svg{width:3.2mm;height:3.2mm;fill:#e2b183}
 .c-url{margin-top:2.2mm;font-size:6.3pt;letter-spacing:.04em;color:#a8968a;direction:ltr}
-@page{size:105mm 148mm;margin:0}
+@page{size:397px 560px;margin:0} /* A6 (105×148 mm) in whole CSS pixels, so the PDF page has no unpainted sliver */
 @media print{
-  html,body{width:105mm;height:148mm;overflow:hidden;background:#0e0c09}
+  /* fill the whole sheet: browsers round the page a hair larger than 105×148 mm */
+  html,body{width:100%;height:100%;overflow:hidden;background:#0e0c09}
   .tools{display:none}
-  .layout{display:block;max-width:none;padding:0}
-  .stage{display:block}
-  .card{box-shadow:none;zoom:1!important}
+  .layout{display:block;max-width:none;height:100%;padding:0}
+  .stage{display:block;height:100%}
+  .card{width:100%;height:100%;box-shadow:none;zoom:1!important}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
