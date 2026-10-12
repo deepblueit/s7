@@ -110,12 +110,22 @@ body{min-height:100vh;font-family:var(--ar);color:var(--cream);line-height:1.6;b
     var br = box.getBoundingClientRect(), ar = a.getBoundingClientRect();
     box.scrollBy({ left: (ar.left + ar.width / 2) - (br.left + br.width / 2), behavior: "smooth" });
   }
+  var hold = 0; /* after a tap, keep the tapped tab lit while the page scrolls to it */
+  chips.forEach(function (a) {
+    a.addEventListener("click", function () { mark(a); hold = Date.now() + 1500; });
+  });
   var io = new IntersectionObserver(function (entries) {
+    if (Date.now() < hold) return;
     entries.forEach(function (e) {
       if (e.isIntersecting) mark(owner[+e.target.id.slice(1)] || null);
     });
   }, { rootMargin: "-130px 0px -70% 0px" }); /* a band just under the sticky header */
   [].forEach.call(document.querySelectorAll(".pages img"), function (img) { io.observe(img); });
+  /* the last sections can't reach the band, so the page bottom counts as the last section */
+  window.addEventListener("scroll", function () {
+    if (Date.now() < hold) return;
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) mark(owner[13]);
+  }, { passive: true });
 })();
 </script>
 </body>
